@@ -45,7 +45,7 @@ const LocationDiv = styled.div`
     font-size: 30px;
     font-weight: bold;
     color: #3E54AC;
-    margin: 30px;
+    margin-bottom: 110px;
 `
 
 function SideNavbar() {
@@ -59,7 +59,7 @@ function SideNavbar() {
             <MenuList>
                 <MenuListChild to="/"  style={{color:pathname=='/' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faHouse}/>
-                    Home
+                    DASH
                 </MenuListChild>
                 <MenuListChild to="/1" style={{color:pathname=='/1' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>

@@ -24,7 +24,6 @@ const HomeRow = styled.div`
     display: flex;
     flex: 1;
     flex-direction: row;
-    flex-
     justify-content: space-around;
     margin: 10px;
 `
@@ -42,7 +41,7 @@ const ChildTitle = styled.div`
     margin-bottom: 10px;
 `
 
-function Home() {
+function Dashboard() {
     return (
         <HomeTag>
             <HomeRow>
@@ -70,4 +69,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Dashboard;

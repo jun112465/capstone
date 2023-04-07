@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Routes, Route} from "react-router";
 
-import Home from "./home/Home";
+import Dashboard from "./home/Dashboard";
 import Floor from "./Floor";
 import DR from "./DR";
 import {useLocation} from "react-router-dom";
@@ -31,7 +31,7 @@ const LocationDiv = styled.div`
 function MainFrame() {
     const location = useLocation();
     const pathname = location.pathname;
-    let title = "HOME";
+    let title = "DASHBOARD";
 
     if (pathname == '/1') title="FIRST FLOOR";
     else if(pathname == '/2') title="SECOND FLOOR";
@@ -43,7 +43,7 @@ function MainFrame() {
         <Frame>
             <LocationDiv>{title}</LocationDiv>
             <Routes>
-                <Route path="/" element={<Home/>}></Route>
+                <Route path="/" element={<Dashboard/>}></Route>
                 <Route path="/1" element={<Floor/>}></Route>
                 <Route path="/2" element={<Floor/>}></Route>
                 <Route path="/3" element={<Floor/>}></Route>
