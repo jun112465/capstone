@@ -4,123 +4,85 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faSolarPanel} from "@fortawesome/free-solid-svg-icons";
 // import { faApple } from "@fortawesome/free-brands-svg-icons";
-// import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-
-import {Link} from "react-router-dom";
-
-const StyledLink = styled(Link)`
-    color: white;
-    text-decoration: none;
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
-`
-
-const HeaderTag = styled.div`
-  <!-- max-width: 1280px; -->
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  background-color: black;
-
-  .logo {
-    margin: 0 1rem;
-    font-size: 2rem;
-  }
-
-  .header__menulist {
-    list-style: none;
-    display: flex;
-  }
-
-  .header__left {
-    display: flex;
-  }
-
-  .header__right {
-    list-style: none;
-    display: flex;
-  }
-
-  .header__right div {
-    margin: 0 1rem;
-  }
-
-  li {
-    padding: 0 1rem;
-    text-decoration: none;
-  }
-
-  .toggle {
-    display: none;
-    font-size: 1.5rem;
-    padding: 1rem 1rem;
-  }
-
-  .user {
-    display: none;
-    font-size: 1.5rem;
-    padding: 1rem 1rem;
-  }
-
-  @media screen and (min-width: 100px) {
-    flex-wrap: wrap;
-
-    .header__right {
-      display: ${(props) => (props.userToggled ? "flex" : "none")};
-      flex-direction: column;
-      width: 100%;
-      background-color: black;
-    }
-
-    .header__menulist {
-      display: ${(props) => (props.isToggled ? "flex" : "none")};
-      flex-direction: column;
-      width: 100%;
-      background-color: black;
-    }
-
-    .header__menulist li,
-    .header__right li {
-      margin: 1rem 0;
-      padding: 0;
-    }
-
-    .toggle {
-      display: block;
-    }
-
-    .user {
-      display: block;
-    }
-  }
-`;
+import { faBars, faXmark} from "@fortawesome/free-solid-svg-icons";
+import DropdownNav from "./DropdownMenu";
 
 const HeadDiv = styled.div`
     display: flex;
+    padding-left: 60px;
     align-items: center;
+    width: 100%;
     height: 60px;
     font-size: 20px;
     box-shadow: 2px 2px 2px 1px grey;
-    padding-left: 50px;
     font-weight: bold;
     background-color: #3E54AC;
     color: white;
+    
+    // 태블릿 화면 분기점
+    @media (max-width: 800px) {
+        justify-content: center;
+        padding-left: 0px;
+    }
+    
+    // 모바일 화면 분기점
+    @media (max-width: 480px) {
+        height: 48px;
+        display: none;
+    }
 `
 
+const MobileHeadDiv = styled.div`
+    background-color: #3E54AC;
+    color: white;
+    height: 60px;
+    display: none;
+    
+    
+    
+    // 모바일 화면 분기점
+    @media (max-width: 480px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+`
+
+
+
 const Header = ()=>{
+    const [clicked, setClicked] = useState(false)
+
     return (
-        <HeadDiv>
-            <FontAwesomeIcon
-                icon={faSolarPanel}
-                style={{
-                    marginRight:'5px',
-                }}
-            />
-            Building Energy Management System
-        </HeadDiv>
+        <div>
+            <HeadDiv>
+                <FontAwesomeIcon
+                    icon={faSolarPanel}
+                    style={{
+                        marginRight:'5px',
+                    }}
+                />
+                Building Energy Management System
+            </HeadDiv>
+            <MobileHeadDiv>
+                <FontAwesomeIcon
+                    icon={clicked ? faXmark : faBars}
+                    style={{
+                        position: 'absolute',
+                        left: '20px',
+                        fontSize: '35px'
+                    }}
+                    onClick={()=>setClicked(!clicked)}
+                />
+                <FontAwesomeIcon
+                    icon={faSolarPanel}
+                    style={{
+                        fontSize: '20px'
+                    }}
+                />
+            </MobileHeadDiv>
+            {clicked ? <DropdownNav/> : null}
+        </div>
     );
 }
 

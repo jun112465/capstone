@@ -7,6 +7,7 @@ const SwitchTag = styled.div`
 `;
 
 const TableTag = styled.table`
+    color: #3E54AC;
     text-align: center;
     background-color: white;
     

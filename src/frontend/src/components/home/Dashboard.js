@@ -15,6 +15,7 @@ const HomeTag = styled.div`
     flex-direction: column;
     margin: 10px;
     justify-content: space-around;
+    
 `;
 
 const HomeRow = styled.div`
@@ -34,7 +35,7 @@ const HomeChild = styled.div`
     margin: 10px;
     
     div {
-        color : #655DBB;
+        color: #3E54AC;
     }
 `
 const ChildTitle = styled.div`
@@ -60,7 +61,7 @@ function Dashboard() {
                     <LoadStatus/>
                 </HomeChild>
                 <HomeChild>
-                    <ChildTitle>NGN PV GENERATION STATUS</ChildTitle>
+                    <ChildTitle>NGN GENERATION STATUS</ChildTitle>
                     <NgnStatus/>
                 </HomeChild>
             </HomeRow>

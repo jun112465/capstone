@@ -25,6 +25,11 @@ const LocationDiv = styled.div`
     color: #3E54AC;
     border-bottom: 2px solid #BFACE2;
     margin: 30px;
+    
+    // 모바일 화면 분기점
+    @media (max-width: 480px) {
+        padding: 0px;
+    }
 `
 
 

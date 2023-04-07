@@ -10,6 +10,7 @@ const RelayTag = styled.div`
 `;
 
 const TableTag = styled.table`
+    color: #3E54AC;
     text-align: center;
     border-spacing: 10px;
     border-collapse: separate;
@@ -21,8 +22,6 @@ const TableTag = styled.table`
     
     th,td {
         padding: 10px;
-        padding-left: 40px;
-        padding-right: 40px;
         text-align: center;
     }
 `

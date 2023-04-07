@@ -10,6 +10,7 @@ const NgnTag = styled.div`
 `;
 
 const TableTag = styled.table`
+    color: #3E54AC;
     text-align: center;
     border-spacing: 10px;
     border-collapse: separate;

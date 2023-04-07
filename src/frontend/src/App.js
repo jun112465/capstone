@@ -14,6 +14,10 @@ const Main = styled.div`
 `;
 
 const TrashSide = styled.div`
+
+    @media (max-width: 480px){
+        display: none;
+    } 
     flex: 2
 `
 

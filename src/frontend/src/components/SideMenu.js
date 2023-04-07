@@ -9,6 +9,10 @@ import {Link, useLocation} from "react-router-dom";
 
 
 let SideNav = styled.div`
+    // 모바일 화면 분기점
+    @media (max-width: 480px) {
+        display: none;
+    }
     flex: 2;
     display: flex;
     flex-direction: column;
