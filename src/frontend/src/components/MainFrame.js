@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Routes, Route} from "react-router";
 
-import Home from "./Home";
+import Home from "./home/Home";
 import Floor from "./Floor";
 import DR from "./DR";
 import {useLocation} from "react-router-dom";

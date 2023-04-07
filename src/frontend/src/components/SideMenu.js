@@ -9,16 +9,19 @@ import {Link, useLocation} from "react-router-dom";
 
 
 let SideNav = styled.div`
-    padding-top: 30px;
     flex: 2;
     display: flex;
-    justify-content: end; 
-    align-items: center;
+    flex-direction: column;
+    justify-content: start; 
+    align-items: end;
 `;
 
 const MenuList = styled.div`
     display: flex;
     flex-direction: column;
+    
+    position: sticky;
+    top: 0;
 `
 const MenuListChild = styled(Link)`
     margin: 15px;
@@ -35,6 +38,16 @@ const iconStyle = {
 }
 
 
+const LocationDiv = styled.div`
+    padding-top: 40px;
+    padding-left: 60px;
+    padding-bottom: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #3E54AC;
+    margin: 30px;
+`
+
 function SideNavbar() {
     const location = useLocation();
     const pathname = location.pathname;
@@ -42,6 +55,7 @@ function SideNavbar() {
 
     return (
         <SideNav>
+            <LocationDiv/>
             <MenuList>
                 <MenuListChild to="/"  style={{color:pathname=='/' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faHouse}/>

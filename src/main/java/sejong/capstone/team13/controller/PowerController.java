@@ -1,32 +1,33 @@
 package sejong.capstone.team13.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import sejong.capstone.team13.domain.Power;
-import sejong.capstone.team13.domain.SolarPower;
-import sejong.capstone.team13.repository.FloorRepository;
-import sejong.capstone.team13.repository.SolarPanelRepository;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sejong.capstone.team13.model.Power;
+import sejong.capstone.team13.repository.UpdatedDataRepository;
 
-@RestController
+import java.util.List;
+
+@Controller
 public class PowerController {
 
-    FloorRepository floorRepository;
-    SolarPanelRepository solarPanelRepository;
+    UpdatedDataRepository udr;
 
     @Autowired
-    PowerController(SolarPanelRepository solarPanelRepository, FloorRepository floorRepository){
-        this.solarPanelRepository = solarPanelRepository;
-        this.floorRepository = floorRepository;
+    public PowerController(UpdatedDataRepository udr){
+        this.udr = udr;
     }
 
-    @GetMapping("/power")
-    public Power getPowers(){
-//        FloorPower fp = new FloorPower();
-        SolarPower sp = new SolarPower(solarPanelRepository.getElectricCurrent(), solarPanelRepository.getVoltage());
-        Power p = new Power();
-        p.setSp(sp);
+    @GetMapping("/load-status")
+    @ResponseBody
+    public List<Power> getLoadStatus(){
+        return udr.getPowers();
+    }
 
-        return p;
+    @GetMapping("/ngn-status")
+    @ResponseBody
+    public Power getNgnStatus(){
+        return udr.getNgnPower();
     }
 }
