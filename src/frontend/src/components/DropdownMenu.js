@@ -48,6 +48,9 @@ function DropdownNav() {
                 <MenuListChild to="/">
                     DASH
                 </MenuListChild>
+                <MenuListChild to="/solar">
+                   SOLAR
+                </MenuListChild>
                 <MenuListChild to="/1">
                     1F
                 </MenuListChild>
@@ -59,6 +62,9 @@ function DropdownNav() {
                 </MenuListChild>
                 <MenuListChild to="/dr">
                     DR
+                </MenuListChild>
+                <MenuListChild to="/admin">
+                    ADMIN
                 </MenuListChild>
             </MenuList>
         </Nav>

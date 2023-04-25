@@ -62,4 +62,28 @@ public class DataAttributeRepository {
                 "AND date <= NOW() " +
                 "AND data_name=\'" + DataName.arr[floor-1] + "\'", VoltRowMapper()));
     }
+
+    public CompletableFuture<List<Power>> getNgnAmpereList(){
+        return CompletableFuture.supplyAsync(()-> template.query(
+                "SELECT * FROM " +
+                        "( SELECT *, DATE_FORMAT(updated_time, '%y-%m-%d') as date, DATE_FORMAT(updated_time, '%T') as time " +
+                        "FROM data_attribute) B " +
+                        "WHERE time>=date_format(NOW(), '%T') " +
+                        "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
+                        "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                        "AND date <= NOW() " +
+                        "AND data_name=\'" + DataName.ngn[0] + "\'", AmpereRowMapper()));
+    }
+
+    public CompletableFuture<List<Power>> getNgnVoltList(){
+        return CompletableFuture.supplyAsync(()-> template.query(
+                "SELECT * FROM " +
+                        "( SELECT *, DATE_FORMAT(updated_time, '%y-%m-%d') as date, DATE_FORMAT(updated_time, '%T') as time " +
+                        "FROM data_attribute) B " +
+                        "WHERE time>=date_format(NOW(), '%T') " +
+                        "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
+                        "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                        "AND date <= NOW() " +
+                        "AND data_name=\'" + DataName.ngn[1] + "\'", VoltRowMapper()));
+    }
 }

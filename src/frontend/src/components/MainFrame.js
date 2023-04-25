@@ -5,6 +5,8 @@ import {Routes, Route} from "react-router";
 import Dashboard from "./home/Dashboard";
 import Floor from "./Floor";
 import DR from "./DR";
+import Solar from "./Solar";
+import Admin from "./Admin";
 import {useLocation} from "react-router-dom";
 
 
@@ -42,6 +44,9 @@ function MainFrame() {
     else if(pathname == '/2') title="SECOND FLOOR";
     else if(pathname == '/3') title="THIRD FLOOR";
     else if(pathname == '/dr') title="DR DIAGRAM";
+    else if(pathname == '/admin') title="ADMIN";
+    else if(pathname == '/solar') title="SOLAR";
+
 
 
     return (
@@ -49,11 +54,14 @@ function MainFrame() {
             <LocationDiv>{title}</LocationDiv>
             <Routes>
                 <Route path="/" element={<Dashboard/>}></Route>
-                <Route path="/1" element={<Floor/>}></Route>
-                <Route path="/2" element={<Floor/>}></Route>
-                <Route path="/3" element={<Floor/>}></Route>
+                <Route key="floor-1" path="/1" element={<Floor floor={1}/>}></Route>
+                <Route key="floor-2" path="/2" element={<Floor floor={2}/>}></Route>
+                <Route key="floor-3" path="/3" element={<Floor floor={3}/>}></Route>
                 <Route path="/4" element={<Floor/>}></Route>
                 <Route path="/dr" element={<DR/>}></Route>
+                <Route path="/admin" element={<Admin/>}></Route>
+                <Route path="/solar" element={<Solar/>}></Route>
+
             </Routes>
         </Frame>
     );

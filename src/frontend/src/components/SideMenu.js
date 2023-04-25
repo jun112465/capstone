@@ -29,7 +29,7 @@ const MenuList = styled.div`
 `
 const MenuListChild = styled(Link)`
     margin: 15px;
-    font-size: 21px;
+    font-size: 16px;
     display: block;
     text-decoration: none;
     color: black;
@@ -65,6 +65,10 @@ function SideNavbar() {
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faHouse}/>
                     DASH
                 </MenuListChild>
+                <MenuListChild to="/solar" style={{color:pathname=='/solar' ? menuChildColor : 'black'}}>
+                    <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>
+                   SOLAR
+                </MenuListChild>
                 <MenuListChild to="/1" style={{color:pathname=='/1' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>
                     1F
@@ -80,6 +84,10 @@ function SideNavbar() {
                 <MenuListChild to="/dr" style={{color:pathname=='/dr' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faDiagramProject}/>
                     DR
+                </MenuListChild>
+                <MenuListChild to="/admin" style={{color:pathname=='/admin' ? menuChildColor : 'black'}}>
+                    <FontAwesomeIcon size="xs" style={iconStyle} icon={faDiagramProject}/>
+                   ADMIN
                 </MenuListChild>
             </MenuList>
         </SideNav>

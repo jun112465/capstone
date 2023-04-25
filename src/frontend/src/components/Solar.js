@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faApple } from "@fortawesome/free-brands-svg-icons";
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
-const FloorTag = styled.div`
+const SolarTag = styled.div`
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -29,20 +30,19 @@ const getCurrentTime = ()=>{
     return currentTime;
 }
 
-function Floor(props) {
+function Solar() {
     const [first, setFirst] = useState(true);
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
 
     useEffect(() => {
-        console.log("selected floor : ",props.floor);
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
             fetch('/graph', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    floor: props.floor,
+                    floor: 1,
                     interval: 0
                 })
             })
@@ -72,7 +72,7 @@ function Floor(props) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    floor: props.floor,
+                    floor: 1,
                     interval: 1
                 })
             })
@@ -103,7 +103,7 @@ function Floor(props) {
     }, [data]);
 
     return (
-        <FloorTag>
+        <SolarTag>
             {/*1초 단위 차트*/}
             <LineChart width={500} height={350} data={data}
                        margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
@@ -128,8 +128,8 @@ function Floor(props) {
                 <Line type="monotone" dataKey="A" stroke="#82ca9d" />
                 <Line type="monotone" dataKey="V" stroke="#c3861d" />
             </LineChart>
-        </FloorTag>
+        </SolarTag>
     );
 }
 
-export default Floor;
+export default Solar;

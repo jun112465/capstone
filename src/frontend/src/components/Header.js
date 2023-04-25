@@ -19,6 +19,7 @@ const HeadDiv = styled.div`
     background-color: #3E54AC;
     color: white;
     
+    
     // 태블릿 화면 분기점
     @media (max-width: 800px) {
         justify-content: center;
@@ -30,6 +31,8 @@ const HeadDiv = styled.div`
         height: 48px;
         display: none;
     }
+    
+    
 `
 
 const MobileHeadDiv = styled.div`
@@ -62,7 +65,9 @@ const Header = ()=>{
                         marginRight:'5px',
                     }}
                 />
-                Building Energy Management System
+                <div>
+                    Building Energy Management System
+                </div>
             </HeadDiv>
             <MobileHeadDiv>
                 <FontAwesomeIcon

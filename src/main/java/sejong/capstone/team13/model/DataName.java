@@ -10,4 +10,9 @@ public class DataName {
             "CF.ColPos.minVal.f ",
             "CF.ColPos.maxVal.f ",
     };
+
+    public static String[] ngn = {
+            "MX.A.phsA.instCVal.mag.f",
+            "MX.A.phsB.instCVal.mag.f"
+    };
 }

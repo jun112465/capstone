@@ -38,7 +38,32 @@ public class GraphController {
             }
             case 1: {
                 // 1일 간격으로 데이터를 불러와야하는 경우
-                powerList = graphService.GetListData();
+                powerList = graphService.getListData();
+                break;
+            }
+            default: {
+                powerList = null;
+                break;
+            }
+        }
+
+        return powerList;
+    }
+
+    @PostMapping("/solar_graph")
+    public List<Power> getSolarGraphData(@RequestBody FloorEnergyRequest floorEnergyRequest){
+
+        List<Power> powerList = null;
+
+        switch (floorEnergyRequest.getInterval()){
+            case 0: {
+                // 10초 간격으로 데이터를 불러와야하는 경우
+                powerList.add(updatedDataRepository.getNgnPower());
+                break;
+            }
+            case 1: {
+                // 1일 간격으로 데이터를 불러와야하는 경우
+                powerList = graphService.getNgnListData();
                 break;
             }
             default: {

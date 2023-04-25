@@ -20,7 +20,7 @@ public class GraphService {
         this.dataAttributeRepository = dataAttributeRepository;
     }
 
-    public ArrayList<Power> GetListData(){
+    public ArrayList<Power> getListData(){
         CompletableFuture<List<Power>> ampereList = dataAttributeRepository.getFloorAmpereList(1);
         CompletableFuture<List<Power>> voltList = dataAttributeRepository.getFloorVoltList(1);
 
@@ -28,6 +28,24 @@ public class GraphService {
             List<Power> newList = new ArrayList<>(listByAmpere);
             for(int i=0; i<listByVolt.size(); i++){
                 newList.get(i).setV(listByVolt.get(i).getV());
+                newList.get(i).setP(newList.get(i).getI() * newList.get(i).getV());
+            }
+            return newList;
+        });
+
+        return (ArrayList<Power>) powerList.join();
+    }
+
+
+    public ArrayList<Power> getNgnListData(){
+        CompletableFuture<List<Power>> ampereList = dataAttributeRepository.getNgnAmpereList();
+        CompletableFuture<List<Power>> voltList = dataAttributeRepository.getNgnVoltList();
+
+        CompletableFuture<Object> powerList = ampereList.thenCombine(voltList, (listByAmpere, listByVolt)-> {
+            List<Power> newList = new ArrayList<>(listByAmpere);
+            for(int i=0; i<listByVolt.size(); i++){
+                newList.get(i).setV(listByVolt.get(i).getV());
+                newList.get(i).setP(newList.get(i).getI() * newList.get(i).getV());
             }
             return newList;
         });
