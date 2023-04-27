@@ -141,6 +141,7 @@ public class UpdatedDataRepository {
             rs.next();
             double a = rs.getDouble("value");
 
+            // 전압
             rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.arr[floor] + "\'");
             rs.next();
             String time = rs.getString("updated_time");
