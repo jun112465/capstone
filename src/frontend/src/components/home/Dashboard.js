@@ -9,6 +9,7 @@ import Relay from "./RelayStatus";
 import SwitchStatus from "./SwitchStatus";
 import LoadStatus from "./LoadStatus";
 import NgnStatus from "./NgnStatus";
+import DRStatus from "./DRStatus";
 
 const HomeTag = styled.div`
     display: flex;
@@ -65,7 +66,16 @@ function Dashboard() {
                     <NgnStatus/>
                 </HomeChild>
             </HomeRow>
-
+            <HomeRow>
+                <HomeChild>
+                    <ChildTitle>DR STATUS</ChildTitle>
+                    <DRStatus/>
+                </HomeChild>
+                <HomeChild>
+                    <ChildTitle>PREDICTION STATUS</ChildTitle>
+                    <NgnStatus/>
+                </HomeChild>
+            </HomeRow>
         </HomeTag>
     );
 }

@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
-const FloorTag = styled.div`
-    margin: 10px;
+const SecChartTag = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-item: center;
+    
+    color: #3E54AC;
+    .title{
+        padding-left: 70px;
+    }
 `;
 
 const getCurrentTime = ()=>{
@@ -29,10 +30,9 @@ const getCurrentTime = ()=>{
     return currentTime;
 }
 
-function Floor(props) {
+function SecChart(props) {
     const [first, setFirst] = useState(true);
     const [data, setData] = useState([]);
-    const [data2, setData2] = useState([]);
 
     useEffect(() => {
         console.log("selected floor : ",props.floor);
@@ -65,37 +65,6 @@ function Floor(props) {
                 });
         }, 1000);
 
-        // 1일 그래프를 위한 코드
-        if(first){
-            setFirst(false);
-            fetch('/graph', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    floor: props.floor,
-                    interval: 1
-                })
-            })
-                .then(response => response.json())
-                .then(json => {
-                    console.log(json);
-                    const newData = []
-                    json.forEach(e => {
-                        newData.push({
-                            "name": e.time.substring(5,10),
-                            "W": e.p,
-                            "A": e.i,
-                            "V": e.v,
-                        })
-                    })
-                    setData2(newData);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        //
         return () => {
             clearInterval(intervalId);
         };
@@ -103,10 +72,10 @@ function Floor(props) {
     }, [data]);
 
     return (
-        <FloorTag>
+        <SecChartTag>
             {/*1초 단위 차트*/}
-            <LineChart width={500} height={350} data={data}
-                       margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+            <div className="title">Sec Chart</div>
+            <LineChart width={900} height={350} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>
@@ -116,20 +85,8 @@ function Floor(props) {
                 <Line type="monotone" dataKey="A" stroke="#82ca9d" />
                 <Line type="monotone" dataKey="V" stroke="#c3861d" />
             </LineChart>
-
-            <LineChart width={500} height={350} data={data2}
-                       margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" style={{fontSize:'11'}}/>
-                <YAxis style={{fontSize:'11'}}/>
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="V" stroke="#c3861d" />
-            </LineChart>
-        </FloorTag>
+        </SecChartTag>
     );
 }
 
-export default Floor;
+export default SecChart;

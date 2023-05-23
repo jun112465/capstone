@@ -18,6 +18,11 @@ public class JDBCTemplateTest {
 
     @Test
     public void getAmperes(){
+        long startTime = System.nanoTime();
+
+
+
+
         CompletableFuture<List<Power>> ampereList = dataAttributeRepository.getFloorAmpereList(1);
         CompletableFuture<List<Power>> voltList = dataAttributeRepository.getFloorVoltList(1);
 
@@ -31,6 +36,13 @@ public class JDBCTemplateTest {
 
         System.out.println(powerList.join());
         System.out.println(powerList.join().getClass());
+
+        long endTime = System.nanoTime();
+        // 두 나노 시간 값의 차이를 얻습니다.
+        long timeElapsed = endTime - startTime;
+
+        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 
 }

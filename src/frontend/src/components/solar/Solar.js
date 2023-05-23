@@ -8,11 +8,20 @@ import { faApple } from "@fortawesome/free-brands-svg-icons";
 import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const SolarTag = styled.div`
-    margin: 10px;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-item: center;
+    
+    color: #3E54AC;
+    .title{
+        padding-left: 70px;
+    }
+    
+    
+     @media (max-width: 500px) {
+    }
 `;
 
 const getCurrentTime = ()=>{
@@ -105,8 +114,8 @@ function Solar() {
     return (
         <SolarTag>
             {/*1초 단위 차트*/}
-            <LineChart width={500} height={350} data={data}
-                       margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+            <div className="title">Second Chart</div>
+            <LineChart className="chart" width={350} height={350} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>
@@ -117,8 +126,8 @@ function Solar() {
                 <Line type="monotone" dataKey="V" stroke="#c3861d" />
             </LineChart>
 
-            <LineChart width={500} height={350} data={data2}
-                       margin={{ top: 50, right: 30, left: 20, bottom: 5 }}>
+            <div className="title">Day Chart</div>
+            <LineChart className="chart" width={350} height={350} data={data2}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>

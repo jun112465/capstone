@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {Routes, Route} from "react-router";
 
-import Dashboard from "./home/Dashboard";
-import Floor from "./Floor";
-import DR from "./DR";
-import Solar from "./Solar";
-import Admin from "./Admin";
+import Dashboard from "../home/Dashboard";
+import Floor from "../floor/Floor";
+import DR from "../dr/DR";
+import Solar from "../solar/Solar";
+import Admin from "../admin/Admin";
 import {useLocation} from "react-router-dom";
 
 
@@ -20,17 +20,20 @@ const Frame = styled.div`
 
 const LocationDiv = styled.div`
     padding-top: 40px;
-    padding-left: 60px;
+    // padding-left: 60px;
     padding-bottom: 15px;
     font-size: 30px;
     font-weight: bold;
     color: #3E54AC;
     border-bottom: 2px solid #BFACE2;
-    margin: 30px;
+    // margin: 30px;
+    // margin-left: 0px;
+    // width: 100%;
     
     // 모바일 화면 분기점
     @media (max-width: 480px) {
         padding: 0px;
+        text-align: center;
     }
 `
 

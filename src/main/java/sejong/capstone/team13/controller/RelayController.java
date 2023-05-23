@@ -37,6 +37,12 @@ public class RelayController {
         return relayRepository.getSwitchStatus();
     }
 
+    @GetMapping("/dr-status")
+    @ResponseBody
+    public List<RelayStatus> getDRStatus(){
+        return relayRepository.getDRStatus();
+    }
+
     /**
      * @param relayStatusRequest
      * contains the value of which floor to control and the current status of the relay

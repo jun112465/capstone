@@ -26,7 +26,7 @@ public class PowerController {
     @GetMapping("/load-status")
     @ResponseBody
     public List<Power> getLoadStatus(){
-        return udr.getPowers();
+        return udr.getLoadStatus();
     }
 
     @GetMapping("/ngn-status")

@@ -2,7 +2,7 @@ package sejong.capstone.team13.model;
 
 public class DataName {
 
-    public static String[] arr = {
+    public static String[] load = {
             "SV.HaCfVol.sub.Mag.f ",
             "SV.HaTiFact.sub.Mag.f ",
             "CF.Vol.min.f ",
@@ -12,7 +12,7 @@ public class DataName {
     };
 
     public static String[] ngn = {
-            "MX.A.phsA.instCVal.mag.f",
-            "MX.A.phsB.instCVal.mag.f"
+            "MX.A.phsA.instCVal.mag.f ",
+            "MX.A.phsB.instCVal.mag.f "
     };
 }

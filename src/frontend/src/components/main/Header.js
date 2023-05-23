@@ -22,12 +22,14 @@ const HeadDiv = styled.div`
     
     // 태블릿 화면 분기점
     @media (max-width: 800px) {
+        width: 100%;
         justify-content: center;
         padding-left: 0px;
     }
     
     // 모바일 화면 분기점
     @media (max-width: 480px) {
+        width: 100%;
         height: 48px;
         display: none;
     }

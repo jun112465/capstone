@@ -38,7 +38,7 @@ public class GraphController {
             }
             case 1: {
                 // 1일 간격으로 데이터를 불러와야하는 경우
-                powerList = graphService.getListData();
+                powerList = graphService.getPowerListData();
                 break;
             }
             default: {

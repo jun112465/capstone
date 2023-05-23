@@ -1,12 +1,14 @@
 package sejong.capstone.team13.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import sejong.capstone.team13.model.DataName;
 import sejong.capstone.team13.model.Power;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,11 +16,13 @@ import java.util.concurrent.CompletableFuture;
 public class DataAttributeRepository {
 
     private JdbcTemplate template;
+//    private DataSource dataSource;
+    private int limit;
 
 
     @Autowired
-    public DataAttributeRepository(JdbcTemplate template){
-        this.template = template;
+    public DataAttributeRepository(@Qualifier("primaryDataSource") DataSource dataSource){
+        this.template = new JdbcTemplate(dataSource);
     }
 
     private RowMapper<Power> AmpereRowMapper() {
@@ -46,9 +50,9 @@ public class DataAttributeRepository {
                 "FROM data_attribute) B " +
                 "WHERE time>=date_format(NOW(), '%T') " +
                 "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
-                "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
                 "AND date <= NOW() " +
-                "AND data_name=\'" + DataName.arr[floor-1] + "\'", AmpereRowMapper()));
+                "AND data_name=\'" + DataName.load[floor-1] + "\'", AmpereRowMapper()));
     }
 
     public CompletableFuture<List<Power>> getFloorVoltList(int floor){
@@ -58,9 +62,9 @@ public class DataAttributeRepository {
                 "FROM data_attribute) B " +
                 "WHERE time>=date_format(NOW(), '%T') " +
                 "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
-                "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
                 "AND date <= NOW() " +
-                "AND data_name=\'" + DataName.arr[floor-1] + "\'", VoltRowMapper()));
+                "AND data_name=\'" + DataName.load[floor-1] + "\'", VoltRowMapper()));
     }
 
     public CompletableFuture<List<Power>> getNgnAmpereList(){
@@ -70,7 +74,7 @@ public class DataAttributeRepository {
                         "FROM data_attribute) B " +
                         "WHERE time>=date_format(NOW(), '%T') " +
                         "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
-                        "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                        "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
                         "AND date <= NOW() " +
                         "AND data_name=\'" + DataName.ngn[0] + "\'", AmpereRowMapper()));
     }
@@ -82,8 +86,81 @@ public class DataAttributeRepository {
                         "FROM data_attribute) B " +
                         "WHERE time>=date_format(NOW(), '%T') " +
                         "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
-                        "AND date >= DATE_SUB(NOW(), INTERVAL 40 DAY) " +
+                        "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
                         "AND date <= NOW() " +
                         "AND data_name=\'" + DataName.ngn[1] + "\'", VoltRowMapper()));
+    }
+
+    public void updateRecentTable(){
+        template.execute("- CREATE TABLE recent AS\n" +
+                "- SELECT data_attribute_id, data_name, value, updated_time\n" +
+                "- FROM data_attribute\n" +
+                "- WHERE date(updated_time)='2023-03-22' OR date(updated_time)='2023-03-21';");
+    }
+
+    public Integer checkRecentRowCnt(){
+        template.execute("SELECT COUNT(data_attribute_id) FROM data_attribute");
+        List<Integer> rowCnt = template.query("SELECT COUNT(data_attribute_id) AS cnt FROM data_attribute", (rs, rowNum)->{
+            Integer cnt;
+            cnt = rs.getInt("cnt");
+            return cnt;
+        });
+
+        return rowCnt.get(0);
+    }
+
+    public List<String> getRecentDates(){
+        List<String> dates = template.query(
+                "SELECT DISTINCT(DATE(updated_time)) AS date FROM data_attribute ORDER BY dates ASC",
+                (rs, rowNum)-> rs.getString("date"));
+        return dates;
+    }
+    public void deleteRecentDate(String date){
+        String sql = "DELETE FROM recent WHERE DATE(updated_time) = \'" + date + "\'";
+        template.execute(sql);
+
+    }
+
+    // 매일 실행되는 코드
+    public void addRecentDay(int year, int month, int day){
+        String sql = "INSERT INTO recent_day(data_attribute_id, data_name, value, updated_time) " +
+                "SELECT data_attribute_id, data_name, value, updated_time" +
+                "FROM data_attribute" +
+                "WHERE YEAR(updated_time) = " +
+                "AND MONTH(updated_time) = " +
+                "AND DAY(updated_time) = " +
+                "AND SECOND(updated_time) = ";
+        template.execute(sql);
+    }
+
+    // 매달 실행되는 코드
+    public void addRecentMonth(int year, int month){
+        String sql = "INSERT INTO recent_year(data_attribute_id, data_name, value, updated_time) " +
+                "SELECT data_attribute_id, data_name, value, updated_time" +
+                "FROM data_attribute" +
+                "WHERE YEAR(updated_time) = " +
+                "AND MONTH(updated_time) = " +
+                "AND SECOND(updated_time) = ";
+        template.execute(sql);
+    }
+
+    public void deleteMonth(int year, int month){
+        String sql = "DELETE FROM recent_year " +
+                "WHERE YEAR(updated_time) = " +
+                "AND MONTH(updated_time) = ";
+        template.execute(sql);
+    }
+
+
+    public CompletableFuture<List<Power>> getFloorVoltList2(int floor){
+        return CompletableFuture.supplyAsync(()-> template.query(
+                "SELECT * FROM " +
+                        "( SELECT *, DATE_FORMAT(updated_time, '%y-%m-%d') as date, DATE_FORMAT(updated_time, '%T') as time " +
+                        "FROM data_attribute) B " +
+                        "WHERE time>=date_format(NOW(), '%T') " +
+                        "AND time<=date_format(date_add(NOW(), INTERVAL 1 SECOND), '%T') " +
+                        "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
+                        "AND date <= NOW() " +
+                        "AND data_name=\'" + DataName.load[floor-1] + "\'", VoltRowMapper()));
     }
 }

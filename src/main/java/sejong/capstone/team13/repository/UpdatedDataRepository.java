@@ -1,11 +1,13 @@
 package sejong.capstone.team13.repository;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 import sejong.capstone.team13.model.DataName;
 import sejong.capstone.team13.model.Power;
 
 import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,29 +24,39 @@ public class UpdatedDataRepository {
     Statement stmt;
     ResultSet rs;
 
-    public UpdatedDataRepository(DataSource dataSource){
+    public UpdatedDataRepository(@Qualifier("primaryDataSource") DataSource dataSource){
         this.dataSource = dataSource;
     }
 
     public Power getNgnPower(){
-        Power power = null;
+        Power power = new Power();
+        con = DataSourceUtils.getConnection(dataSource);
 
         try {
-            con = DataSourceUtils.getConnection(dataSource);
             stmt = con.createStatement();
 
-            // 1층부터 3층까지의 power 정보를 얻기 위해 3번 줄부터 8번 줄까지의 정보를 가져온다.
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE updated_data_id BETWEEN 1 AND 2");
+            // 전류
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
+                    + DataName.ngn[0]
+                    + "\'");
+            if(rs.next()){
+                power.setI(rs.getDouble("value"));
+            }
 
-            rs.next();
-            double a = rs.getDouble("value");
-            rs.next();
-            double v = rs.getDouble("value");
-            String time = rs.getString("updated_time");
+            // 전압
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
+                    + DataName.ngn[1]
+                    + "\'");
+            if(rs.next()){
+                power.setV(rs.getDouble("value"));
+                power.setTime(rs.getString("updated_time"));
+                power.setP(power.getI() * power.getV());
+            }
 
-            power = new Power(time, a,v);
+            return power;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            return power;
         }finally {
             // ResultSet을 닫습니다.
             if (rs != null) {
@@ -72,33 +84,57 @@ public class UpdatedDataRepository {
             }
         }
 
-        return power;
     }
 
 
-    public List<Power> getPowers(){
+    public List<Power> getLoadStatus(){
         List<Power> powerList = new ArrayList<>();
+        con = DataSourceUtils.getConnection(dataSource);
 
         try {
-            con = DataSourceUtils.getConnection(dataSource);
             stmt = con.createStatement();
 
-            // 1층부터 3층까지의 power 정보를 얻기 위해 3번 줄부터 8번 줄까지의 정보를 가져온다.
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE updated_data_id BETWEEN 3 AND 8");
+            for(int i=0; i<DataName.load.length; i+=2){
+                Power p = new Power();
+                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
+                        + DataName.load[i]
+                        + "\'");
+                if(rs.next())
+                    p.setI(rs.getDouble("value"));
 
-            for(int i=0; i<3; i++){
-                rs.next();
-                double a = rs.getDouble("value");
+                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
+                        + DataName.load[i+1]
+                        + "\'");
+                if(rs.next())
+                    p.setV(rs.getDouble("value"));
 
-                rs.next();
-                double v = rs.getDouble("value");
-                String time = rs.getString("updated_time");
-
-                powerList.add(new Power(time, a,v));
+                powerList.add(p);
             }
+//
+//            // 1층부터 3층까지의 power 정보를 얻기 위해 3번 줄부터 8번 줄까지의 정보를 가져온다.
+//            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE updated_data_id BETWEEN 3 AND 8");
+//
+//            for(int i=0; i<3; i++){
+//                Power p = new Power();
+//
+//                if(rs.next()) {
+//                    rs.next();
+//                    p.setI(rs.getDouble("value"));
+//                }
+//
+//
+//                if(rs.next()) {
+//                    p.setV(rs.getDouble("value"));
+//                    p.setTime(rs.getString("updated_time"));
+//                }
+//
+//                powerList.add(p);
+//            }
+
+            return powerList;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return powerList;
         } finally {
             // ResultSet을 닫습니다.
             if (rs != null) {
@@ -126,7 +162,6 @@ public class UpdatedDataRepository {
             }
         }
 
-        return powerList;
     }
 
     public List<Power> getFloorPower(int floor){
@@ -137,17 +172,19 @@ public class UpdatedDataRepository {
             stmt = con.createStatement();
 
             // 전류
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.arr[floor-1] + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.load[floor-1] + "\'");
             rs.next();
             double a = rs.getDouble("value");
 
             // 전압
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.arr[floor] + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.load[floor] + "\'");
             rs.next();
             String time = rs.getString("updated_time");
             double v = rs.getDouble("value");
 
             powerList.add(new Power(time, a, v));
+
+            return powerList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -177,6 +214,5 @@ public class UpdatedDataRepository {
             }
         }
 
-        return powerList;
     }
 }

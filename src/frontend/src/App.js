@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
-import MainFrame from "./components/MainFrame";
-import SideMenu from "./components/SideMenu";
+import Header from "./components/main/Header";
+import MainFrame from "./components/main/MainFrame";
+import SideMenu from "./components/main/SideMenu";
 import styled from "styled-components";
 
 
@@ -12,6 +12,7 @@ const Main = styled.div`
     flex-direction: row;
     font-size: 21px;
 `;
+
 
 const TrashSide = styled.div`
 
