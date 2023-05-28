@@ -55,21 +55,24 @@ const CreateNewPwTag = styled.div`
 `;
 
 function CreateNewPw() {
-    const [pwd,setPwd] = useState("");
-    const pwdSubmitRef = useRef(null);
+    const [beforePwd,setBeforePwd] = useState("");
+    const [afterPwd,setAfterPwd] = useState("");
 
-    const handlePasswordChange = (e)=>{
-        setPwd(e.target.value);
+    const handleBeforePwdChange = (e)=>{
+        setBeforePwd(e.target.value);
+    }
+    const handleAfterPwdChange = (e)=>{
+        setAfterPwd(e.target.value);
     }
 
-    let sendLoginRequest = ()=>{
-        console.log(pwd);
-        fetch('/login', {
+    let changePwdRequest = ()=>{
+        console.log(beforePwd, afterPwd);
+        fetch('/change-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-
             body: JSON.stringify({
-                'pwd': pwd,
+                'before': beforePwd,
+                'after': afterPwd
             })
         })
             .then(response => response.json())
@@ -78,17 +81,18 @@ function CreateNewPw() {
                 alert(data.message)
             });
     }
+
     return (
         <CreateNewPwTag>
             <div className="title">PASSWORD</div>
             <div className="line-block">
-                <input className="line top" placeholder="ENTER CURRENT PASSWORD">
+                <input id="beforePwd" className="line top" placeholder="ENTER CURRENT PASSWORD" onChange={handleBeforePwdChange}>
                 </input>
 
-                <input className="line" placeholder="ENTER NEW PASSWORD">
+                <input id="afterPwd" className="line" placeholder="ENTER NEW PASSWORD" onChange={handleAfterPwdChange}>
                 </input>
 
-                <input className="line bottom enter" type="button" value="CHANGE PASSWORD"/>
+                <input className="line bottom enter" type="button" value="CHANGE PASSWORD" onClick={changePwdRequest}/>
             </div>
         </CreateNewPwTag>
     );

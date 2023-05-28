@@ -1,22 +1,20 @@
 package sejong.capstone.team13.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sejong.capstone.team13.model.request.ChangePassword;
 import sejong.capstone.team13.model.request.PasswordRequest;
 import sejong.capstone.team13.model.response.LoginResponse;
 import sejong.capstone.team13.repository.PasswordRepository;
 
 @Controller
-public class LoginController {
+public class AdminController {
 
     PasswordRepository passwordRepository; @Autowired
-    LoginController(PasswordRepository passwordRepository){
+    AdminController(PasswordRepository passwordRepository){
         this.passwordRepository = passwordRepository;
     }
 
@@ -31,5 +29,15 @@ public class LoginController {
         }else{
             return new LoginResponse(true, "Success");
         }
+    }
+
+    @PostMapping("/change-password")
+    public void changePwd(@RequestBody ChangePassword cp){
+        System.out.println(cp);
+        // 검증 과정
+
+
+        // 변경 과정
+        passwordRepository.updatePwd(cp.getAfter());
     }
 }

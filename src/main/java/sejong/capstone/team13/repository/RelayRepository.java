@@ -2,8 +2,10 @@ package sejong.capstone.team13.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
+import sejong.capstone.team13.model.request.RelayStatusRequest;
 import sejong.capstone.team13.model.response.RelayStatus;
 
 import javax.sql.DataSource;
@@ -23,10 +25,14 @@ public class RelayRepository {
     Statement stmt;
     ResultSet rs;
 
+    JdbcTemplate jdbcTemplate;
+
     @Autowired
     public RelayRepository(@Qualifier("primaryDataSource") DataSource dataSource){
         this.dataSource = dataSource;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
 
     public List<RelayStatus> getRelayStatus(){
         List<RelayStatus> rsList = new ArrayList<>();
@@ -165,4 +171,13 @@ public class RelayRepository {
 
     }
 
+    public void setRelayStatus(RelayStatusRequest relayStatus){
+        String sql = "UPDATE relay SET relay_is_using = ? WHERE relay_id = ?";
+        jdbcTemplate.update(sql, relayStatus.getAfter(), relayStatus.getFloor());
+    }
+
+    public List<Integer> getRelayStatus(int relayId){
+        String sql = "SELECT * FROM relay WHERE relay_id = " + relayId;
+        return jdbcTemplate.query(sql, (resultSet, rowNum) -> resultSet.getInt("relay_is_using"));
+    }
 }

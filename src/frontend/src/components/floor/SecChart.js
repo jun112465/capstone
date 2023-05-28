@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
-import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import {
+    CartesianGrid,
+    Legend,
+    Line,
+    LineChart,
+    AreaChart,
+    Area,
+    Tooltip,
+    XAxis,
+    YAxis
+} from "recharts";
 
 const SecChartTag = styled.div`
     display: flex;
@@ -35,7 +45,7 @@ function SecChart(props) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        console.log("selected floor : ",props.floor);
+        console.log("selected floor : ", props.floor);
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
             fetch('/graph', {
@@ -74,17 +84,16 @@ function SecChart(props) {
     return (
         <SecChartTag>
             {/*1초 단위 차트*/}
-            <div className="title">Sec Chart</div>
-            <LineChart width={900} height={350} data={data}>
+            <AreaChart width={700} height={350} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>
                 <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="V" stroke="#c3861d" />
-            </LineChart>
+                <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />
+                <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>
+                <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
+
+            </AreaChart>
         </SecChartTag>
     );
 }

@@ -36,17 +36,15 @@ public class UpdatedDataRepository {
             stmt = con.createStatement();
 
             // 전류
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
-                    + DataName.ngn[0]
-                    + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = "
+                    + DataName.ngn[0]);
             if(rs.next()){
                 power.setI(rs.getDouble("value"));
             }
 
             // 전압
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
-                    + DataName.ngn[1]
-                    + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = "
+                    + DataName.ngn[1]);
             if(rs.next()){
                 power.setV(rs.getDouble("value"));
                 power.setTime(rs.getString("updated_time"));
@@ -96,15 +94,14 @@ public class UpdatedDataRepository {
 
             for(int i=0; i<DataName.load.length; i+=2){
                 Power p = new Power();
-                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
-                        + DataName.load[i]
-                        + "\'");
+                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = "
+                        + DataName.load[i]);
                 if(rs.next())
                     p.setI(rs.getDouble("value"));
 
-                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'"
-                        + DataName.load[i+1]
-                        + "\'");
+                rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = "
+                        + DataName.load[i+1]);
+
                 if(rs.next())
                     p.setV(rs.getDouble("value"));
 
@@ -172,12 +169,12 @@ public class UpdatedDataRepository {
             stmt = con.createStatement();
 
             // 전류
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.load[floor-1] + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = " + DataName.load[floor-1] + " ");
             rs.next();
             double a = rs.getDouble("value");
 
             // 전압
-            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = \'" + DataName.load[floor] + "\'");
+            rs = stmt.executeQuery("SELECT * FROM updated_data WHERE data_name = " + DataName.load[floor] + " ");
             rs.next();
             String time = rs.getString("updated_time");
             double v = rs.getDouble("value");

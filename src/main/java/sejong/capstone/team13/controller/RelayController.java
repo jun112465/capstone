@@ -31,6 +31,12 @@ public class RelayController {
         return relayStatusList;
     }
 
+    @GetMapping("/relay")
+    @ResponseBody
+    public List<Integer> getRelayStatus(@RequestParam(value = "relay-id") Integer relayId){
+        return relayRepository.getRelayStatus(relayId);
+    }
+
     @GetMapping("/switch-status")
     @ResponseBody
     public Integer getSwitchStatus(){
@@ -48,8 +54,10 @@ public class RelayController {
      * contains the value of which floor to control and the current status of the relay
      */
     @PostMapping("/relay-control")
-    public void setRelayStatus(@RequestBody RelayStatusRequest relayStatusRequest){
+    @ResponseBody
+    public boolean setRelayStatus(@RequestBody RelayStatusRequest relayStatusRequest){
         // relay 상태 바꾸는 코드 작성하기
-        //
+        relayRepository.setRelayStatus(relayStatusRequest);
+        return relayStatusRequest.getAfter();
     }
 }

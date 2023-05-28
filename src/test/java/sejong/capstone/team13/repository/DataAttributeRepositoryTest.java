@@ -79,4 +79,40 @@ public class DataAttributeRepositoryTest {
         System.out.println(future.get());
         System.out.println("1");
     }
+
+    @Test
+    public void testRecent(){
+        List<Power> al = dataAttributeRepository.getFloorRecentAmpere(1);
+        List<Power> vl = dataAttributeRepository.getFloorRecentVolt(1);
+
+        System.out.println("AL");
+        System.out.println(al.size());
+        for(Power p : al){
+            System.out.println(p);
+        }
+
+        System.out.println("VL");
+        System.out.println(vl.size());
+        for(Power p : vl){
+            System.out.println(p);
+        }
+    }
+
+    @Test
+    public void testNgnRecent(){
+        List<Power> al = dataAttributeRepository.getNgnRecentAmpere();
+        List<Power> vl = dataAttributeRepository.getNgnRecentVolt();
+
+        System.out.println("AL");
+        System.out.println(al.size());
+        for(Power p : al){
+            System.out.println(p);
+        }
+
+        System.out.println("VL");
+        System.out.println(vl.size());
+        for(Power p : vl){
+            System.out.println(p);
+        }
+    }
 }

@@ -9,6 +9,7 @@ import sejong.capstone.team13.model.DataName;
 import sejong.capstone.team13.model.Power;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -162,5 +163,131 @@ public class DataAttributeRepository {
                         "AND date >= DATE_SUB(NOW(), INTERVAL 100 DAY) " +
                         "AND date <= NOW() " +
                         "AND data_name=\'" + DataName.load[floor-1] + "\'", VoltRowMapper()));
+    }
+
+    public List<Power> getFloorRecentAmpere(int floor){
+        // 전류
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent where data_name=" + DataName.load[floor-1] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \"%H:%i:01\")";
+        // 전압
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setI(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+
+    public List<Power> getFloorRecentVolt(int floor){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent where data_name=" + DataName.load[floor] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setV(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+
+    public List<Power> getNgnRecentAmpere(){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent where data_name=" + DataName.ngn[0] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setI(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+    public List<Power> getNgnRecentVolt(){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent where data_name=" + DataName.ngn[1] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setV(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+
+    public List<Power> getFloorMonthAmpere(int floor){
+        // 전류
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent_year where data_name=" + DataName.load[floor-1] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \"%H:%i:01\")";
+        // 전압
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setI(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+
+    public List<Power> getFloorMonthVolt(int floor){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent_year where data_name=" + DataName.load[floor] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setV(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+
+    public List<Power> getNgnMonthAmpere(){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent_year where data_name=" + DataName.ngn[0] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setI(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
+    }
+    public List<Power> getNgnMonthVolt(){
+        // 전압
+
+        String sql = "select data_attribute_id,data_name, value, date_format(updated_time, \'%Y-%m-%d\') as date " +
+                "from recent_year where data_name=" + DataName.ngn[1] + " " +
+                "and date_format(updated_time, \'%H:%i:00\') = date_format(now(), \"%H:%i:00\") " +
+                "OR date_add(date_format(updated_time, \'%H:%i:00\'), interval 1 second) = date_format(now(), \'%H:%i:01\')";
+
+        return template.query(sql, (rs, rowNum)->{
+            Power p = new Power();
+            p.setV(rs.getDouble("value"));
+            p.setTime(rs.getString("date"));
+            return p;
+        });
     }
 }

@@ -38,6 +38,7 @@ import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 import SecChart from "./SecChart";
 import DayChart from "./DayChart";
+import MonthChart from "./MonthChart";
 
 const FloorTag = styled.div`
     display: flex;
@@ -73,6 +74,7 @@ const getCurrentTime = ()=>{
 }
 
 function Floor(props) {
+    const [floor, setFloor] = useState(props.floor);
     const [first, setFirst] = useState(true);
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
@@ -84,83 +86,87 @@ function Floor(props) {
 
     let renderComponent = () => {
         if (selected === 'SECOND CHART') {
-            return <SecChart />;
+            return <SecChart floor={props.floor}/>;
         } else if (selected === 'DAY CHART') {
-            return <DayChart />;
+            return <DayChart floor={props.floor}/>;
         } else if (selected === 'MONTH CHART') {
-            return <DayChart />;
+            return <MonthChart floor={props.floor}/>;
         }
 
         // 선택한 옵션에 따라 다른 컴포넌트를 반환
     }
 
     useEffect(() => {
-        console.log("selected floor : ",props.floor);
-        // 1초 그래프를 위한 코드
-        const intervalId = setInterval(() => {
-            fetch('/graph', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    floor: props.floor,
-                    interval: 0
-                })
-            })
-                .then(response => response.json())
-                .then(json => {
-                    const newData = [...data, {
-                        "name" : getCurrentTime(),
-                        "W": json[0].p,
-                        "A": json[0].i,
-                        "V": json[0].v,
-                    }];
-
-                    if(newData.length > 5){
-                        newData.shift();
-                    }
-                    setData(newData);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }, 1000);
-
-        // 1일 그래프를 위한 코드
-        if(first){
-            setFirst(false);
-            fetch('/graph', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    floor: props.floor,
-                    interval: 1
-                })
-            })
-                .then(response => response.json())
-                .then(json => {
-                    console.log(json);
-                    const newData = []
-                    json.forEach(e => {
-                        newData.push({
-                            "name": e.time.substring(5,10),
-                            "W": e.p,
-                            "A": e.i,
-                            "V": e.v,
-                        })
-                    })
-                    setData2(newData);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+        console.log(floor, props.floor)
+        if(floor != props.floor){
+            setFloor(props.floor);
         }
-
+        // console.log("selected floor : ",props.floor);
+        // // 1초 그래프를 위한 코드
+        // const intervalId = setInterval(() => {
+        //     fetch('/graph', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({
+        //             floor: props.floor,
+        //             interval: 0
+        //         })
+        //     })
+        //         .then(response => response.json())
+        //         .then(json => {
+        //             const newData = [...data, {
+        //                 "name" : getCurrentTime(),
+        //                 "W": json[0].p,
+        //                 "A": json[0].i,
+        //                 "V": json[0].v,
+        //             }];
         //
-        return () => {
-            clearInterval(intervalId);
-        };
+        //             if(newData.length > 5){
+        //                 newData.shift();
+        //             }
+        //             setData(newData);
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }, 1000);
 
-    }, [data]);
+        // // 1일 그래프를 위한 코드
+        // if(first){
+        //     setFirst(false);
+        //     fetch('/graph', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({
+        //             floor: props.floor,
+        //             interval: 1
+        //         })
+        //     })
+        //         .then(response => response.json())
+        //         .then(json => {
+        //             console.log(json);
+        //             const newData = []
+        //             json.forEach(e => {
+        //                 newData.push({
+        //                     "name": e.time.substring(5,10),
+        //                     "W": e.p,
+        //                     "A": e.i,
+        //                     "V": e.v,
+        //                 })
+        //             })
+        //             setData2(newData);
+        //         })
+        //         .catch(error => {
+        //             console.error('Error:', error);
+        //         });
+        // }
+        //
+        // //
+        // return () => {
+        //     clearInterval(intervalId);
+        // };
+
+    });
 
     return (
         <FloorTag>
@@ -174,45 +180,44 @@ function Floor(props) {
                 <p>{selected}</p>
             </div>
             <div>
-                <div className="title">Sec Chart</div>
                 {renderComponent()}
             </div>
-            <div>
-                <LineChart className="chart" width={700} height={350} data={data}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" style={{fontSize:'11'}}/>
-                    <YAxis style={{fontSize:'11'}}/>
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                    <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="V" stroke="#c3861d" />
-                </LineChart>
-            </div>
+            {/*<div>*/}
+            {/*    <LineChart className="chart" width={700} height={350} data={data}>*/}
+            {/*        <CartesianGrid strokeDasharray="3 3" />*/}
+            {/*        <XAxis dataKey="name" style={{fontSize:'11'}}/>*/}
+            {/*        <YAxis style={{fontSize:'11'}}/>*/}
+            {/*        <Tooltip />*/}
+            {/*        <Legend />*/}
+            {/*        <Line type="monotone" dataKey="W" stroke="#8884d8" />*/}
+            {/*        <Line type="monotone" dataKey="A" stroke="#82ca9d" />*/}
+            {/*        <Line type="monotone" dataKey="V" stroke="#c3861d" />*/}
+            {/*    </LineChart>*/}
+            {/*</div>*/}
 
-            {/*1초 단위 차트*/}
-            <LineChart className="chart" width={700} height={350} data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" style={{fontSize:'11'}}/>
-                <YAxis style={{fontSize:'11'}}/>
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="V" stroke="#c3861d" />
-            </LineChart>
+            {/*/!*1초 단위 차트*!/*/}
+            {/*<LineChart className="chart" width={700} height={350} data={data}>*/}
+            {/*    <CartesianGrid strokeDasharray="3 3" />*/}
+            {/*    <XAxis dataKey="name" style={{fontSize:'11'}}/>*/}
+            {/*    <YAxis style={{fontSize:'11'}}/>*/}
+            {/*    <Tooltip />*/}
+            {/*    <Legend />*/}
+            {/*    <Line type="monotone" dataKey="W" stroke="#8884d8" />*/}
+            {/*    <Line type="monotone" dataKey="A" stroke="#82ca9d" />*/}
+            {/*    <Line type="monotone" dataKey="V" stroke="#c3861d" />*/}
+            {/*</LineChart>*/}
 
-            <div className="title">Day Chart</div>
-            <LineChart className="chart" width={700} height={350} data={data2}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" style={{fontSize:'11'}}/>
-                <YAxis style={{fontSize:'11'}}/>
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="V" stroke="#c3861d" />
-            </LineChart>
+            {/*<div className="title">Day Chart</div>*/}
+            {/*<LineChart className="chart" width={700} height={350} data={data2}>*/}
+            {/*    <CartesianGrid strokeDasharray="3 3" />*/}
+            {/*    <XAxis dataKey="name" style={{fontSize:'11'}}/>*/}
+            {/*    <YAxis style={{fontSize:'11'}}/>*/}
+            {/*    <Tooltip />*/}
+            {/*    <Legend />*/}
+            {/*    <Line type="monotone" dataKey="W" stroke="#8884d8" />*/}
+            {/*    <Line type="monotone" dataKey="A" stroke="#82ca9d" />*/}
+            {/*    <Line type="monotone" dataKey="V" stroke="#c3861d" />*/}
+            {/*</LineChart>*/}
         </FloorTag>
     );
 }

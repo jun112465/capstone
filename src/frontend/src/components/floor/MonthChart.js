@@ -3,11 +3,7 @@ import styled from "styled-components";
 
 import {Area, AreaChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faApple } from "@fortawesome/free-brands-svg-icons";
-import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
-
-const DayChartTag = styled.div`
+const MonthChartTag = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,26 +15,27 @@ const DayChartTag = styled.div`
     }
 `;
 
-function DayChart() {
+function MonthChart(props) {
     const [data2, setData2] = useState([]);
 
     useEffect(() => {
         // 1일 그래프를 위한 코드
-        fetch('/solar-graph', {
+        fetch('/graph', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                floor: 1,
-                interval: 1
+                floor: props.floor,
+                interval: 2
             })
         })
             .then(response => response.json())
             .then(json => {
                 console.log(json);
+                // json = JSON.stringify(json);
                 const newData = []
                 json.forEach(e => {
                     newData.push({
-                        "name": e.time.substring(5, 10),
+                        "name": e.time.substring(5,10),
                         "W": e.p,
                         "A": e.i,
                         "V": e.v,
@@ -49,12 +46,10 @@ function DayChart() {
             .catch(error => {
                 console.error('Error:', error);
             });
-    }, [])
+    }, []);
 
-
-        return (
-        <DayChartTag>
-
+    return (
+        <MonthChartTag>
             <AreaChart width={700} height={350} data={data2}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
@@ -65,9 +60,8 @@ function DayChart() {
                 <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
 
             </AreaChart>
-
-        </DayChartTag>
+        </MonthChartTag>
     );
 }
 
-export default DayChart;
+export default MonthChart;

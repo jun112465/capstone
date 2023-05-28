@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 
 const ToggleTag = styled.div`
@@ -54,13 +54,34 @@ const ToggleTag = styled.div`
 
 
 function Toggle(props) {
-    const [status, setStatus] = useState("OFF");
+    const [isChecked, setIsChecked] = useState(null);
+
+    let handleCheckboxChange = (e)=>{
+        fetch('/relay-control', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                floor: props.relayId,
+                before: isChecked,
+                after: !isChecked
+            })
+        })
+            .then(resp => resp.json())
+            .then(data => setIsChecked(data[0]))
+    }
+
+    useEffect(()=> {
+        fetch('/relay?relay-id=' + props.relayId)
+            .then(response => response.json())
+            .then(data => setIsChecked(data[0]));
+    });
+
+    // console.log(props.relayId, props.status)
 
     return (
         <ToggleTag>
             <label className="form-switch">
-                {/*{status}*/}
-                <input type="checkbox"/>
+                <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange}/>
                 <i></i>
             </label>
         </ToggleTag>

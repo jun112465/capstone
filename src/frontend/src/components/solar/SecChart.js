@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
-import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import {Area, AreaChart, CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faApple } from "@fortawesome/free-brands-svg-icons";
@@ -40,7 +40,7 @@ function SecChart() {
     useEffect(() => {
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
-            fetch('/graph', {
+            fetch('/solar-graph', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -77,17 +77,17 @@ function SecChart() {
     return (
         <SecChartTag>
             {/*1초 단위 차트*/}
-            <div className="title">Second Chart</div>
-            <LineChart className="chart" style={{overflowX: 'auto',}} width={700} height={350} data={data}>
+
+            <AreaChart width={700} height={350} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>
                 <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="W" stroke="#8884d8" />
-                <Line type="monotone" dataKey="A" stroke="#82ca9d" />
-                <Line type="monotone" dataKey="V" stroke="#c3861d" />
-            </LineChart>
+                <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />
+                <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>
+                <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
+            </AreaChart>
+
         </SecChartTag>
     );
 }

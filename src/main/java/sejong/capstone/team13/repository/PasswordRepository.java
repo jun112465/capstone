@@ -1,6 +1,8 @@
 package sejong.capstone.team13.repository;
 
+import ch.qos.logback.classic.jul.JULHelper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +22,11 @@ public class PasswordRepository {
     Statement stmt;
     ResultSet rs;
 
+    JdbcTemplate jdbcTemplate;
+
     PasswordRepository(@Qualifier("secondaryDataSource")DataSource dataSource){
         this.dataSource = dataSource;
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public String getPwd(){
@@ -34,5 +39,10 @@ public class PasswordRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updatePwd(String newPwd){
+        String sql = "UPDATE password SET pwd = ?";
+        jdbcTemplate.update(sql, newPwd);
     }
 }

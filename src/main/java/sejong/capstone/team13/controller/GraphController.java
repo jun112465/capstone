@@ -1,9 +1,7 @@
 package sejong.capstone.team13.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sejong.capstone.team13.model.Power;
 import sejong.capstone.team13.model.request.FloorEnergyRequest;
 import sejong.capstone.team13.repository.UpdatedDataRepository;
@@ -32,13 +30,18 @@ public class GraphController {
 
         switch (floorEnergyRequest.getInterval()){
             case 0: {
-                // 10초 간격으로 데이터를 불러와야하는 경우
+                // 1초 간격으로 데이터를 불러와야하는 경우
                 powerList = updatedDataRepository.getFloorPower(floorEnergyRequest.getFloor());
                 break;
             }
             case 1: {
                 // 1일 간격으로 데이터를 불러와야하는 경우
-                powerList = graphService.getPowerListData();
+                powerList = graphService.getFloorRecentPower(floorEnergyRequest.getFloor());
+                break;
+            }
+            case 2: {
+                // 30일 간격으로 데이터를 불러와야하는 경우
+                powerList = graphService.getFloorRecentYearPower(floorEnergyRequest.getFloor());
                 break;
             }
             default: {
@@ -50,20 +53,25 @@ public class GraphController {
         return powerList;
     }
 
-    @PostMapping("/solar_graph")
+    @PostMapping("/solar-graph")
     public List<Power> getSolarGraphData(@RequestBody FloorEnergyRequest floorEnergyRequest){
 
         List<Power> powerList = null;
 
         switch (floorEnergyRequest.getInterval()){
             case 0: {
-                // 10초 간격으로 데이터를 불러와야하는 경우
+                // 1초 간격으로 데이터를 불러와야하는 경우
+                powerList = new ArrayList<>();
                 powerList.add(updatedDataRepository.getNgnPower());
                 break;
             }
             case 1: {
                 // 1일 간격으로 데이터를 불러와야하는 경우
-                powerList = graphService.getNgnListData();
+                powerList = graphService.getNgnRecentPower();
+                break;
+            }
+            case 2: {
+                powerList = graphService.getNgnRecentYearPower();
                 break;
             }
             default: {
