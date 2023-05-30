@@ -115,4 +115,9 @@ public class DataAttributeRepositoryTest {
             System.out.println(p);
         }
     }
+
+    @Test
+    public void addDataTest(){
+        dataAttributeRepository.addData();
+    }
 }

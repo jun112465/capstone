@@ -45,6 +45,7 @@ const FloorTag = styled.div`
     flex-direction: column;
     justify-content: center;
     align-item: center;
+    padding: 20px;
     
     color: #3E54AC;
     .title{
@@ -78,19 +79,51 @@ function Floor(props) {
     const [first, setFirst] = useState(true);
     const [data, setData] = useState([]);
     const [data2, setData2] = useState([]);
+
     const [selected, setSelected] = useState("SECOND CHART");
+    const [selected2, setSelected2] = useState("SECOND CHART");
+    const [selected3, setSelected3] = useState("SECOND CHART");
 
     let handleChange = (e)=>{
         setSelected(e.target.value);
     }
+    let handleChange2 = (e)=>{
+        setSelected2(e.target.value);
+    }
+    let handleChange3 = (e)=>{
+        setSelected3(e.target.value);
+    }
 
-    let renderComponent = () => {
+    let renderComponent = (floor) => {
         if (selected === 'SECOND CHART') {
-            return <SecChart floor={props.floor}/>;
+            return <SecChart floor={floor}/>;
         } else if (selected === 'DAY CHART') {
-            return <DayChart floor={props.floor}/>;
+            return <DayChart floor={floor}/>;
         } else if (selected === 'MONTH CHART') {
-            return <MonthChart floor={props.floor}/>;
+            return <MonthChart floor={floor}/>;
+        }
+
+        // 선택한 옵션에 따라 다른 컴포넌트를 반환
+    }
+
+    let renderComponent2 = (floor) => {
+        if (selected2 === 'SECOND CHART') {
+            return <SecChart floor={floor}/>;
+        } else if (selected2 === 'DAY CHART') {
+            return <DayChart floor={floor}/>;
+        } else if (selected2 === 'MONTH CHART') {
+            return <MonthChart floor={floor}/>;
+        }
+
+        // 선택한 옵션에 따라 다른 컴포넌트를 반환
+    }
+    let renderComponent3 = (floor) => {
+        if (selected3 === 'SECOND CHART') {
+            return <SecChart floor={floor}/>;
+        } else if (selected3 === 'DAY CHART') {
+            return <DayChart floor={floor}/>;
+        } else if (selected3 === 'MONTH CHART') {
+            return <MonthChart floor={floor}/>;
         }
 
         // 선택한 옵션에 따라 다른 컴포넌트를 반환
@@ -171,16 +204,43 @@ function Floor(props) {
     return (
         <FloorTag>
             <div>
+                <div>FlOOR 1</div>
                 <select id="interval-select"  onChange={handleChange}>
                     <option value="">--Please choose an option--</option>
                     <option value="SECOND CHART">Second</option>
                     <option value="DAY CHART">Day</option>
                     <option value="MONTH CHART">Month</option>
                 </select>
-                <p>{selected}</p>
             </div>
             <div>
-                {renderComponent()}
+                {renderComponent(1)}
+            </div>
+
+            <div>
+
+                <div>FLOOR 2</div>
+                <select id="interval-select"  onChange={handleChange2}>
+                    <option value="">--Please choose an option--</option>
+                    <option value="SECOND CHART">Second</option>
+                    <option value="DAY CHART">Day</option>
+                    <option value="MONTH CHART">Month</option>
+                </select>
+            </div>
+            <div>
+                {renderComponent2(2)}
+            </div>
+
+            <div>
+                <div>FLOOR 3</div>
+                <select id="interval-select"  onChange={handleChange3}>
+                    <option value="">--Please choose an option--</option>
+                    <option value="SECOND CHART">Second</option>
+                    <option value="DAY CHART">Day</option>
+                    <option value="MONTH CHART">Month</option>
+                </select>
+            </div>
+            <div>
+                {renderComponent3(3)}
             </div>
             {/*<div>*/}
             {/*    <LineChart className="chart" width={700} height={350} data={data}>*/}

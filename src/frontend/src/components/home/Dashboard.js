@@ -10,6 +10,7 @@ import SwitchStatus from "./SwitchStatus";
 import LoadStatus from "./LoadStatus";
 import NgnStatus from "./NgnStatus";
 import DRStatus from "./DRStatus";
+import PredictionStatus from "./PredictionStatus";
 
 const HomeTag = styled.div`
     display: flex;
@@ -73,7 +74,7 @@ function Dashboard() {
                 </HomeChild>
                 <HomeChild>
                     <ChildTitle>PREDICTION STATUS</ChildTitle>
-                    <NgnStatus/>
+                    <PredictionStatus/>
                 </HomeChild>
             </HomeRow>
         </HomeTag>

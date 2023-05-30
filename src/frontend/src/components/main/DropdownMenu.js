@@ -52,17 +52,17 @@ function DropdownNav() {
                    SOLAR
                 </MenuListChild>
                 <MenuListChild to="/1">
-                    1F
+                    FLOOR
                 </MenuListChild>
-                <MenuListChild to="/2">
-                    2F
-                </MenuListChild>
-                <MenuListChild to="/3">
-                    3F
-                </MenuListChild>
-                <MenuListChild to="/dr">
-                    DR
-                </MenuListChild>
+                {/*<MenuListChild to="/2">*/}
+                {/*    2F*/}
+                {/*</MenuListChild>*/}
+                {/*<MenuListChild to="/3">*/}
+                {/*    3F*/}
+                {/*</MenuListChild>*/}
+                {/*<MenuListChild to="/dr">*/}
+                {/*    DR*/}
+                {/*</MenuListChild>*/}
                 <MenuListChild to="/admin">
                     ADMIN
                 </MenuListChild>

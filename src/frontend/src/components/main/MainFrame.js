@@ -58,10 +58,8 @@ function MainFrame() {
             <Routes>
                 <Route path="/" element={<Dashboard/>}></Route>
                 <Route key="floor-1" path="/1" element={<Floor floor={1}/>}></Route>
-                <Route key="floor-2" path="/2" element={<Floor floor={2}/>}></Route>
-                <Route key="floor-3" path="/3" element={<Floor floor={3}/>}></Route>
-                <Route path="/4" element={<Floor/>}></Route>
-                <Route path="/dr" element={<DR/>}></Route>
+                {/*<Route key="floor-2" path="/2" element={<Floor floor={2}/>}></Route>*/}
+                {/*<Route key="floor-3" path="/3" element={<Floor floor={3}/>}></Route>*/}
                 <Route path="/admin" element={<Admin/>}></Route>
                 <Route path="/solar" element={<Solar/>}></Route>
 

@@ -9,7 +9,7 @@ import { faBars, faUser, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const DayChartTag = styled.div`
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: center;
     align-item: center;
     
@@ -21,6 +21,14 @@ const DayChartTag = styled.div`
 
 function DayChart() {
     const [data2, setData2] = useState([]);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+        console.log(windowWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
 
     useEffect(() => {
         // 1일 그래프를 위한 코드
@@ -51,10 +59,8 @@ function DayChart() {
             });
     }, [])
 
-
+    let renderLargeGraph = ()=>{
         return (
-        <DayChartTag>
-
             <AreaChart width={700} height={350} data={data2}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
@@ -65,6 +71,39 @@ function DayChart() {
                 <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
 
             </AreaChart>
+        )
+    }
+
+    let renderSmallGraph = ()=>{
+        return (
+            <AreaChart width={300} height={350} data={data2}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" style={{fontSize:'11'}}/>
+                <YAxis style={{fontSize:'11'}}/>
+                <Tooltip />
+                <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />
+                <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>
+                <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
+
+            </AreaChart>
+        )
+    }
+
+
+        return (
+        <DayChartTag>
+
+            {windowWidth > 900 ? renderLargeGraph() : renderSmallGraph()}
+            {/*<AreaChart width={700} height={350} data={data2}>*/}
+            {/*    <CartesianGrid strokeDasharray="3 3" />*/}
+            {/*    <XAxis dataKey="name" style={{fontSize:'11'}}/>*/}
+            {/*    <YAxis style={{fontSize:'11'}}/>*/}
+            {/*    <Tooltip />*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>*/}
+
+            {/*</AreaChart>*/}
 
         </DayChartTag>
     );

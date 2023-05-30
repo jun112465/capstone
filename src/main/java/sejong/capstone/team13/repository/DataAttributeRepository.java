@@ -9,8 +9,11 @@ import sejong.capstone.team13.model.DataName;
 import sejong.capstone.team13.model.Power;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 @Repository
@@ -289,5 +292,17 @@ public class DataAttributeRepository {
             p.setTime(rs.getString("date"));
             return p;
         });
+    }
+
+    public void addData(){
+        LocalDateTime date = LocalDateTime.now();
+        for(int i=0; i<100; i++) {
+            Random rand = new Random();
+            Integer load = rand.nextInt(1000) + 90000;
+            Integer gen = rand.nextInt(300) + 6000;
+            String sql = String.format("INSERT INTO forecast_data(forecast_Load, forecast_Gen, updated_time) " +
+                    "VALUES(%s,%s,\'%s\')", load, gen , date.minusHours(i));
+            template.execute(sql);
+        }
     }
 }

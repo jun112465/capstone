@@ -12,11 +12,23 @@ const AdminTag = styled.div`
 `;
 
 function Admin() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleChange = (newValue) => {
+        setIsLoggedIn(newValue);
+    }
+
+    let renderLoggedIn = ()=>{
+        return (
+            <div>
+                <ControlBlock/>
+                <CreateNewPw/>
+            </div>
+        )
+    }
     return (
         <AdminTag>
-            {/*<Login/>*/}
-            <ControlBlock/>
-            <CreateNewPw/>
+            {isLoggedIn ? renderLoggedIn() : <Login handleChange={handleChange}/> }
         </AdminTag>
     );
 }

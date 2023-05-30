@@ -15,7 +15,7 @@ import {
 
 const SecChartTag = styled.div`
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: center;
     align-item: center;
     
@@ -41,10 +41,29 @@ const getCurrentTime = ()=>{
 }
 
 function SecChart(props) {
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [graphWidth, setGraphWidth] = useState(700);
+
     const [first, setFirst] = useState(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
+
+        // width 조절
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+            console.log(windowWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+
+
+
+
+
+
+
         console.log("selected floor : ", props.floor);
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
@@ -77,14 +96,42 @@ function SecChart(props) {
 
         return () => {
             clearInterval(intervalId);
+            window.removeEventListener('resize', handleResize);
         };
 
     }, [data]);
 
-    return (
-        <SecChartTag>
-            {/*1초 단위 차트*/}
-            <AreaChart width={700} height={350} data={data}>
+
+    const calculateVariable = () => {
+        if (windowWidth > 1200) {
+            return 700;
+        } else if (windowWidth > 768) {
+            return 500;
+        } else {
+            return 400;
+        }
+    };
+
+    const variableValue = calculateVariable();
+
+    let renderLargeGraph = ()=>{
+        return (
+        <AreaChart width={700} height={350} data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" style={{fontSize:'11'}}/>
+            <YAxis style={{fontSize:'11'}}/>
+            <Tooltip />
+            <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />
+            <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>
+            <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
+
+        </AreaChart>
+        )
+    }
+
+    let renderSmallGraph = ()=>{
+        return (
+        <AreaChart width={300} height={350} data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" style={{fontSize:'11'}}/>
                 <YAxis style={{fontSize:'11'}}/>
@@ -94,6 +141,22 @@ function SecChart(props) {
                 <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>
 
             </AreaChart>
+        )
+    }
+    return (
+        <SecChartTag>
+            {/*1초 단위 차트*/}
+            {windowWidth > 900 ? renderLargeGraph() : renderSmallGraph()}
+            {/*<AreaChart width={700} height={350} data={data}>*/}
+            {/*    <CartesianGrid strokeDasharray="3 3" />*/}
+            {/*    <XAxis dataKey="name" style={{fontSize:'11'}}/>*/}
+            {/*    <YAxis style={{fontSize:'11'}}/>*/}
+            {/*    <Tooltip />*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="W" stroke="#8884d8" fill="#8884d8" />*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="A" stroke="#82ca9d" fill="#82ca9d"/>*/}
+            {/*    <Area stackId="1" type="monotone" dataKey="V" stroke="#c3861d" fill="#c3861d"/>*/}
+
+            {/*</AreaChart>*/}
         </SecChartTag>
     );
 }

@@ -71,20 +71,20 @@ function SideNavbar() {
                 </MenuListChild>
                 <MenuListChild to="/1" style={{color:pathname=='/1' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>
-                    1F
+                    FLOOR
                 </MenuListChild>
-                <MenuListChild to="/2" style={{color:pathname=='/2' ? menuChildColor : 'black'}}>
-                    <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>
-                    2F
-                </MenuListChild>
-                <MenuListChild to="/3" style={{color:pathname=='/3' ? menuChildColor : 'black'}}>
-                    <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>
-                    3F
-                </MenuListChild>
-                <MenuListChild to="/dr" style={{color:pathname=='/dr' ? menuChildColor : 'black'}}>
-                    <FontAwesomeIcon size="xs" style={iconStyle} icon={faDiagramProject}/>
-                    DR
-                </MenuListChild>
+                {/*<MenuListChild to="/2" style={{color:pathname=='/2' ? menuChildColor : 'black'}}>*/}
+                {/*    <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>*/}
+                {/*    2F*/}
+                {/*</MenuListChild>*/}
+                {/*<MenuListChild to="/3" style={{color:pathname=='/3' ? menuChildColor : 'black'}}>*/}
+                {/*    <FontAwesomeIcon size="xs" style={iconStyle} icon={faCube}/>*/}
+                {/*    3F*/}
+                {/*</MenuListChild>*/}
+                {/*<MenuListChild to="/dr" style={{color:pathname=='/dr' ? menuChildColor : 'black'}}>*/}
+                {/*    <FontAwesomeIcon size="xs" style={iconStyle} icon={faDiagramProject}/>*/}
+                {/*    DR*/}
+                {/*</MenuListChild>*/}
                 <MenuListChild to="/admin" style={{color:pathname=='/admin' ? menuChildColor : 'black'}}>
                     <FontAwesomeIcon size="xs" style={iconStyle} icon={faDiagramProject}/>
                    ADMIN

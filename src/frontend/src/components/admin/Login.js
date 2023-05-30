@@ -56,7 +56,7 @@ const LoginTag = styled.div`
     }
 `;
 
-function Login() {
+function Login(props) {
     const [pwd,setPwd] = useState("");
     const pwdSubmitRef = useRef(null);
 
@@ -78,6 +78,7 @@ function Login() {
             .then(data => {
                 console.log(data)
                 alert(data.message)
+                if(data.success) props.handleChange(true);
             });
     }
     return (
