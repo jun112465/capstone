@@ -67,7 +67,7 @@ function SecChart(props) {
         console.log("selected floor : ", props.floor);
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
-            fetch('/graph', {
+            fetch(process.env.REACT_APP_ORIGIN+'/graph', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

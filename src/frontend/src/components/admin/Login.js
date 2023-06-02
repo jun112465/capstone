@@ -66,7 +66,7 @@ function Login(props) {
 
     let sendLoginRequest = ()=>{
         console.log(pwd);
-        fetch('/login', {
+        fetch(process.env.REACT_APP_ORIGIN+'/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
 

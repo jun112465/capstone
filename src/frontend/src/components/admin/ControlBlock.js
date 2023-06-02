@@ -53,14 +53,14 @@ function ControlBlock() {
     const [DrStatus, setDrStatus] = useState([false, false, false]);
 
     useEffect(()=>{
-        fetch('/switch-status')
+        fetch(process.env.REACT_APP_ORIGIN + '/switch-status')
             .then(response => response.json())
             .then(data => {
                 console.log("switch", data)
                 setSwitchStatus(data);
             });
 
-        fetch('/relay-status')
+        fetch(process.env.REACT_APP_ORIGIN + '/relay-status')
             .then(response => response.json())
             .then(data => {
                 console.log("relay", data)
@@ -70,7 +70,7 @@ function ControlBlock() {
                 setRelayStatus(tmpStatus);
             });
 
-        fetch('/dr-status')
+        fetch(process.env.REACT_APP_ORIGIN+'/dr-status')
             .then(response => response.json())
             .then(data => {
                 console.log("dr", data)

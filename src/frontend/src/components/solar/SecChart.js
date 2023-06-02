@@ -49,7 +49,7 @@ function SecChart() {
     useEffect(() => {
         // 1초 그래프를 위한 코드
         const intervalId = setInterval(() => {
-            fetch('/solar-graph', {
+            fetch(process.env.REACT_APP_ORIGIN+'/solar-graph', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

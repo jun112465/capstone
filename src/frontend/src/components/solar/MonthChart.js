@@ -29,7 +29,7 @@ function MonthChart(props) {
 
     useEffect(() => {
         // 1일 그래프를 위한 코드
-        fetch('/solar-graph', {
+        fetch(process.env.REACT_APP_ORIGIN+'/solar-graph', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

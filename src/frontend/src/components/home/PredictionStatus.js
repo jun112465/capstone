@@ -32,7 +32,7 @@ function PredictionStatus() {
 
     useEffect(()=>{
         // relay status 값을 받아온 후 값을 업데이트 한다.
-        fetch('/forecast')
+        fetch(process.env.REACT_APP_ORIGIN+'/forecast')
             .then(response => response.json())
             .then(data => {
                 console.log(data)
@@ -53,8 +53,8 @@ function PredictionStatus() {
         <PredictionTag>
             <TableTag>
                 <tr>
-                    <th>LOAD (단위 : W)</th>
-                    <th>GENERATED (단위 : W)</th>
+                    <th>LOAD (단위 : MW)</th>
+                    <th>GENERATED (단위 : MW)</th>
                 </tr>
                 <tr>
                     <td>{value.load}</td>

@@ -27,8 +27,8 @@ public class AdminController {
         }if(!pwd.equals(passwordRepository.getPwd())){
             return new LoginResponse(false, "Wrong Password");
         }else{
-            String token = JwtUtil.generateToken("admin");
-            return new LoginResponse(true, token);
+//            String token = JwtUtil.generateToken("admin");
+            return new LoginResponse(true, "Success");
         }
     }
 

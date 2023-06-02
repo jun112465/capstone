@@ -24,21 +24,15 @@ public class PasswordRepository {
 
     JdbcTemplate jdbcTemplate;
 
-    PasswordRepository(@Qualifier("secondaryDataSource")DataSource dataSource){
+    PasswordRepository(DataSource dataSource){
         this.dataSource = dataSource;
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public String getPwd(){
-        try {
-            con = DataSourceUtils.getConnection(dataSource);
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM password");
-            rs.next();
+        return jdbcTemplate.query("SELECT * FROM password", (rs, rowNum)->{
             return rs.getString("pwd");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        }).get(0);
     }
 
     public void updatePwd(String newPwd){

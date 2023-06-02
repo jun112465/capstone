@@ -35,7 +35,7 @@ function Relay() {
 
     useEffect(()=>{
         // relay status 값을 받아온 후 값을 업데이트 한다.
-        fetch('/relay-status')
+        fetch(process.env.REACT_APP_ORIGIN+'/relay-status')
             .then(response => response.json())
             .then(data => {
                 console.log(data)

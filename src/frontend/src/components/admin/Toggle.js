@@ -57,7 +57,7 @@ function Toggle(props) {
     const [isChecked, setIsChecked] = useState(null);
 
     let handleCheckboxChange = (e)=>{
-        fetch('/relay-control', {
+        fetch(process.env.REACT_APP_ORIGIN+'/relay-control', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -71,10 +71,10 @@ function Toggle(props) {
     }
 
     useEffect(()=> {
-        fetch('/relay?relay-id=' + props.relayId)
+        fetch(process.env.REACT_APP_ORIGIN+'/relay?relay-id=' + props.relayId)
             .then(response => response.json())
             .then(data => setIsChecked(data[0]));
-    });
+    }, []);
 
     // console.log(props.relayId, props.status)
 

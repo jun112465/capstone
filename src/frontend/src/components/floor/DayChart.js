@@ -29,7 +29,7 @@ function DayChart(props) {
         window.addEventListener('resize', handleResize);
 
         // 1일 그래프를 위한 코드
-        fetch('/graph', {
+        fetch(process.env.REACT_APP_ORIGIN+'/graph', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

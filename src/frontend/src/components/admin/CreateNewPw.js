@@ -67,7 +67,7 @@ function CreateNewPw() {
 
     let changePwdRequest = ()=>{
         console.log(beforePwd, afterPwd);
-        fetch('/change-password', {
+        fetch(process.env.REACT_APP_ORIGIN+'/change-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
