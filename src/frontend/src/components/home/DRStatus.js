@@ -32,7 +32,11 @@ function DRStatus(){
 
     useEffect(()=>{
         // relay status 값을 받아온 후 값을 업데이트 한다.
-        fetch(process.env.REACT_APP_ORIGIN+'/dr-status')
+        fetch(process.env.REACT_APP_ORIGIN+'/dr-status', {
+            headers: {
+                'Origin' : process.env.REACT_APP_RORIGIN
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 setSwitchStat(data);
